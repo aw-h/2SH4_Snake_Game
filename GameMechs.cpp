@@ -73,11 +73,13 @@ void GameMechs::setExitTrue()
 void GameMechs::setLoseFlag()
 {
     loseFlag = true; //when the player loses specifically, ie crashes into themselves
+    exitFlag = true; //the game also stops
 }
 
 void GameMechs::setWinFlag()
 {
     winFlag = true; //player wins
+    exitFlag = true; //the game also stops
 }
 
 void GameMechs::setInput(char this_input)

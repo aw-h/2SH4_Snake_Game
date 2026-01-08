@@ -6,6 +6,7 @@ Food::Food(GameMechs *thisGMRef, const objPosArrayList *playerALRef, objPosArray
     mainGameMechsRef = thisGMRef;
     playerArrayList = playerALRef; //pass in an objPos array list so it is known which coordinates are not valid/occupied
     foodArrayList = foodALRef; //
+    
     generateFood(playerArrayList, foodArrayList);
 }
 

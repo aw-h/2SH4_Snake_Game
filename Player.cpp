@@ -64,13 +64,12 @@ void Player::updatePlayerDir()
                 break;
         }
 
-        mainGameMechsRef->setInput(0); //once the input has been used, whether useful or not, it should be reset
+        mainGameMechsRef->setInput(0); //once the input has been processed, whether useful or not, it should be reset
     }          
 }
 
 void Player::movePlayer()
 {
-    // PPA3 Finite State Machine logic. Altered to work with the snake body
     switch(myDir)
     {
         case(UP):
@@ -145,4 +144,10 @@ void Player::movePlayer()
     }
 }
 
-// More methods to be added
+void Player::updateLength(bool ateFood)
+{
+    if (ateFood) //only if food was eaten (normal food) will the snake increase in length
+    {
+        playerPosList->increaseLength();
+    }
+}

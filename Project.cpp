@@ -54,8 +54,8 @@ void Initialize(void)
 
     gmPtr = new GameMechs();
     playerPtr = new Player(gmPtr);
-    playerData = new objPos; //is sthis needed anymore?
-    playerALPtr = new objPosArrayList();
+    playerData = new objPos; //is this needed anymore?
+    playerALPtr = new objPosArrayList(); //is this needed anymore?
     foodALPtr = new objPosArrayList; //this seems quite wasteful (400 spots...) maybe change this
 
     
@@ -81,26 +81,45 @@ void RunLogic(void)
 {
     playerPtr->updatePlayerDir();
     playerPtr->movePlayer();
+    bool ateFood = false; //check if the snake has eaten food. If so, do the necessary logic with the lengthening it
 
-    // playerPtr->getPlayerPos(*playerData);
     for (int i = 0; i < foodBinSize; i++)
     {
-        if (playerPtr->getPlayerPos()->getHeadElement().pos->x == foodALPtr->getElement(i).pos->x && playerPtr->getPlayerPos()->getHeadElement().pos->y == foodALPtr->getElement(i).pos->y)
-            // playerALPtr->getHeadElement().pos->x == foodALPtr->getElement(i).pos->x && playerALPtr->getHeadElement().pos->y == foodALPtr->getElement(i).pos->y) //only the head matters in terms of collisions
-        // f->getFoodPos().pos->x && playerData->pos->y == f->getFoodPos().pos->y)
+        if (playerPtr->getPlayerPos()->getHeadElement().pos->x == foodALPtr->getElement(i).pos->x && playerPtr->getPlayerPos()->getHeadElement().pos->y == foodALPtr->getElement(i).pos->y) //the head
         {
             foodBin[i]->addScore(); //this is polymorphic; if its the correct food, it will add 10 instead of 1
-            //delete foodBin[i]; //delete to then make a new food in its place
+            
             if (i <= 3) //if the eaten food is one of the normal ones (ie index 0 - 3), replace with a normal food
             {
                 foodBin[i]->regenerateFood(playerALPtr, foodALPtr, i);
+                ateFood = true; //food has been eaten. This is only "true" if it's a normal food; super food does not increase length
+                break;
             }
             else
             {
                 foodBin[i]->regenerateFood(playerALPtr, foodALPtr, i);
+                break;
             }
-            break;
         }
+    }
+
+    playerPtr->updateLength(ateFood);
+
+    for (int i = 1; i < playerPtr->getPlayerPos()->getSize(); i++) //compare the head's position to that of every other body segment, ie start at i = 1
+    {
+        if (playerPtr->getPlayerPos()->getHeadElement().pos->x == playerPtr->getPlayerPos()->getElement(i).pos->x && playerPtr->getPlayerPos()->getHeadElement().pos->y == playerPtr->getPlayerPos()->getElement(i).pos->y)
+        {
+            gmPtr->setLoseFlag();
+        }
+    }
+
+    int xSize = gmPtr->getBoardSizeX();
+    int ySize = gmPtr->getBoardSizeY();
+    int validSpaces = (xSize - 2) * (ySize - 2) - 5; //this is the total number of spaces the snake can possibly take up; (x without borders) * (y without bordesr) - 5 for the 5 foods
+    
+    if (playerPtr->getPlayerPos()->getSize() == validSpaces) //all spaces are taken up; the player has won
+    {
+        gmPtr->setWinFlag();
     }
 }
 
@@ -165,7 +184,11 @@ void DrawScreen(void)
     {
         if (gmPtr->getLoseFlagStatus()) //further condition; if the player is leaving specifically because they lost, display this message instead
         {
-            MacUILib_printf("You lost. Thank you for playing!\n"); //should this be in cleanup instead? ie cleaning up to put the final statement, which is this
+            MacUILib_printf("You lost. Thanks for playing!\n"); //should this be in cleanup instead? ie cleaning up to put the final statement, which is this
+        }
+        else if (gmPtr->getWinFlagStatus())
+        {
+            MacUILib_printf("Wow, you actually won! Congratulations, thanks for playing!");
         }
         else
         {

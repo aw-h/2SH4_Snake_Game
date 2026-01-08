@@ -60,6 +60,11 @@ void objPosArrayList::removeTail()
     listSize--; //make the last index out of access; "lazy deletion"
 }
 
+void objPosArrayList::increaseLength()
+{
+    listSize++; //since all deletion is lazy, you can simply add back the removed final element
+}
+
 objPos objPosArrayList::getHeadElement() const
 {
     objPos copy; //make a copy of the objPos element at the first index and returns it

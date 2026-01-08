@@ -22,6 +22,7 @@ class objPosArrayList
         void updateElement(const int index, objPos newPos); //replace element at certain index with another objPos
         void removeHead();
         void removeTail();
+        void increaseLength();
         
         objPos getHeadElement() const;
         objPos getTailElement() const;
