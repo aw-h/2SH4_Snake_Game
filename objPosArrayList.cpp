@@ -39,6 +39,13 @@ void objPosArrayList::insertTail(objPos thisPos)
     aList[listSize++] = thisPos; //an element has been added. Increase listSize afterwards
 }
 
+void objPosArrayList::updateElement(const int index, objPos newPos)
+{
+    aList[index].pos->x = newPos.pos->x;
+    aList[index].pos->y = newPos.pos->y;
+    aList[index].symbol = newPos.symbol;
+}
+
 void objPosArrayList::removeHead()
 {
     for (int i = 0; i < listSize - 1; i++)

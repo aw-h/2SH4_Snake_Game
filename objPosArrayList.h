@@ -19,6 +19,7 @@ class objPosArrayList
         int getSize() const;
         void insertHead(objPos thisPos);
         void insertTail(objPos thisPos);
+        void updateElement(const int index, objPos newPos); //replace element at certain index with another objPos
         void removeHead();
         void removeTail();
         

@@ -20,9 +20,10 @@ class Food
         const objPosArrayList* playerArrayList; //this should keep track of all relevant coordinates of ONLY the snake body
         objPosArrayList* foodArrayList; //similarly, this keeps track of all the relevant coordintaes of ONLY the fruits
     public: 
-        Food(GameMechs *thisGMRef, Player *thisPlayerRef, const objPosArrayList *playerALRef, objPosArrayList *foodALRef); //default constructor. Same thing as the Player class, must have a reference of GameMechs
+        Food(GameMechs *thisGMRef, const objPosArrayList *playerALRef, objPosArrayList *foodALRef); //default constructor. Same thing as the Player class, must have a reference of GameMechs
         ~Food(); //destructor. Is this needed?
         virtual void generateFood(const objPosArrayList* coordArrayList, objPosArrayList* foodArrayList); //generates a random food item such that it does not overlap on the player's (or any other fruit's) position. Virtual because this should be able to handle noraml and special fruit
+        virtual void regenerateFood(const objPosArrayList* coordArrayList, objPosArrayList* foodArrayList, const int index); //regenerates a random food item of the same type once it is eaten
         objPos getFoodPos() const;
         virtual void addScore();
 };
@@ -30,9 +31,10 @@ class Food
 class supFood : public Food //superfood. Special things should happen if this is eaten
 {
     public: 
-        supFood(GameMechs *thisGMRef, Player *thisPlayerRef, const objPosArrayList *playerALRef, objPosArrayList *foodALRef) : Food(thisGMRef, thisPlayerRef, playerALRef, foodALRef) {} //supFood's own constructor calls the base class' constructor. 
+        supFood(GameMechs *thisGMRef, const objPosArrayList *playerALRef, objPosArrayList *foodALRef) : Food(thisGMRef, playerALRef, foodALRef) {} //supFood's own constructor calls the base class' constructor. 
         ~supFood(); //destructor. Is this needed?
         void generateFood(const objPosArrayList* coordArrayList, objPosArrayList* foodArrayList); //generates a random food item such that it does not overlap on the player's (or any other fruit's) position. Virtual because this should be able to handle normal and special fruit
+        void regenerateFood(const objPosArrayList* coordArrayList, objPosArrayList* foodArrayList, const int index); //regenerates a random food item of the same type once it is eaten
         void addScore();
 };
 

@@ -15,6 +15,7 @@ class GameMechs
         char input;
         bool exitFlag;
         bool loseFlag;
+        bool winFlag; //when the player wins ie all spaces filled by either the snake, the foods, or the border
         int score;
 
         int boardSizeX;
@@ -30,6 +31,8 @@ class GameMechs
         void setExitTrue();
         bool getLoseFlagStatus() const;
         void setLoseFlag();
+        bool getWinFlagStatus() const;
+        void setWinFlag();
 
         char getInput() const;
         void setInput(char this_input);

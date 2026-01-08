@@ -62,10 +62,10 @@ void Initialize(void)
     foodBin = new Food*[foodBinSize]; //allocate 5 Foods on the heap
     for (int i = 0; i < foodBinSize - 1; i++) //generate the food items
     {
-        foodBin[i] = new Food(gmPtr, playerPtr, playerPtr->getPlayerPos(), foodALPtr);
+        foodBin[i] = new Food(gmPtr, playerPtr->getPlayerPos(), foodALPtr);
         foodBin[i]->generateFood(playerPtr->getPlayerPos(), foodALPtr);
     }
-    foodBin[4] = new supFood(gmPtr, playerPtr, playerPtr->getPlayerPos(), foodALPtr); //the last food item, the 5th, is a super food
+    foodBin[4] = new supFood(gmPtr, playerPtr->getPlayerPos(), foodALPtr); //the last food item, the 5th, is a super food
     foodBin[4]->generateFood(playerPtr->getPlayerPos(), foodALPtr);
 }
 
@@ -90,16 +90,15 @@ void RunLogic(void)
         // f->getFoodPos().pos->x && playerData->pos->y == f->getFoodPos().pos->y)
         {
             foodBin[i]->addScore(); //this is polymorphic; if its the correct food, it will add 10 instead of 1
-            // delete foodBin[i]; //delete to then make a new food in its place
+            //delete foodBin[i]; //delete to then make a new food in its place
             if (i <= 3) //if the eaten food is one of the normal ones (ie index 0 - 3), replace with a normal food
             {
-                Food* newFood = new Food(gmPtr, playerPtr, playerPtr->getPlayerPos(), foodALPtr);
+                foodBin[i]->regenerateFood(playerALPtr, foodALPtr, i);
             }
             else
             {
-                Food* newFood = new supFood(gmPtr, playerPtr, playerPtr->getPlayerPos(), foodALPtr);
+                foodBin[i]->regenerateFood(playerALPtr, foodALPtr, i);
             }
-            // foodBin[i]->generateFood(playerPtr->getPlayerPos(), foodALPtr); replace w insert element
             break;
         }
     }

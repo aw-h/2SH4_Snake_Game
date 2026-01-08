@@ -34,6 +34,10 @@ bool GameMechs::getLoseFlagStatus() const
     return loseFlag;
 }
     
+bool GameMechs::getWinFlagStatus() const
+{
+    return winFlag;
+}
 
 char GameMechs::getInput() const
 {
@@ -69,6 +73,11 @@ void GameMechs::setExitTrue()
 void GameMechs::setLoseFlag()
 {
     loseFlag = true; //when the player loses specifically, ie crashes into themselves
+}
+
+void GameMechs::setWinFlag()
+{
+    winFlag = true; //player wins
 }
 
 void GameMechs::setInput(char this_input)
