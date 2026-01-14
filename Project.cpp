@@ -52,9 +52,9 @@ void Initialize(void)
     MacUILib_clearScreen();
     srand(time(NULL)); //seed the rng using the current time
 
-    gmPtr = new GameMechs();
+    gmPtr = new GameMechs(3,9);
     playerPtr = new Player(gmPtr);
-    playerData = new objPos; //is this needed anymore?
+    //playerData = new objPos; //is this needed anymore?
     playerALPtr = new objPosArrayList(); //is this needed anymore?
     foodALPtr = new objPosArrayList; //this seems quite wasteful (400 spots...) maybe change this
 
@@ -179,6 +179,10 @@ void DrawScreen(void)
     MacUILib_printf("Snake size: %d\n", playerPtr->getPlayerPos()->getSize());
     gmPtr->getExitFlagStatus() ? MacUILib_printf("exitFlag: true\n") : MacUILib_printf("exitFlag: false\n"); //ternary debugging statements
     gmPtr->getLoseFlagStatus() ? MacUILib_printf("loseFlag: true\n") : MacUILib_printf("loseFlag: false\n"); 
+    int xSize = gmPtr->getBoardSizeX();
+    int ySize = gmPtr->getBoardSizeY();
+    int validSpaces = (xSize - 2) * (ySize - 2) - 5; 
+    MacUILib_printf("Valid spaces: %d\n", validSpaces);
 
     if (gmPtr->getExitFlagStatus()) //if exitFlag is true, start preparing to exit the program
     {

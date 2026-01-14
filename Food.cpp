@@ -28,7 +28,11 @@ void Food::generateFood(const objPosArrayList* playerArrayList, objPosArrayList*
 
         for (int i = 0; i < playerArrayList->getSize(); i++) //check if this matches any of the coordinate pairs already in the array list. If so, regenerate
         {
-            isUnique &= foodPos.pos->x != playerArrayList->getElement(i).pos->x && foodPos.pos->y != playerArrayList->getElement(i).pos->y; //check if this coordinate pair overlaps with any of the body segments
+            if (foodPos.pos->x == playerArrayList->getElement(i).pos->x && foodPos.pos->y == playerArrayList->getElement(i).pos->y) //if the food coordinate matches a body segment
+            {
+                isUnique = false; //the coordinates are not unique
+            }
+            //isUnique &= (foodPos.pos->x != playerArrayList->getElement(i).pos->x || foodPos.pos->y != playerArrayList->getElement(i).pos->y); //check if this coordinate pair overlaps with any of the body segments
             if (not isUnique)
             {
                 break;
@@ -36,7 +40,11 @@ void Food::generateFood(const objPosArrayList* playerArrayList, objPosArrayList*
         } 
         for (int i = 0; i < foodArrayList->getSize(); i++) //check if this matches any of the coordinate pairs already in the array list. If so, regenerate
         {
-            isUnique &= foodPos.pos->x != foodArrayList->getElement(i).pos->x && foodPos.pos->x != foodArrayList->getElement(i).pos->y; //check if this coordinate pair overlaps with any of the othe foods
+            if (foodPos.pos->x == foodArrayList->getElement(i).pos->x && foodPos.pos->y == foodArrayList->getElement(i).pos->y)
+            {
+                isUnique = false;
+            }
+            //isUnique &= (foodPos.pos->x != foodArrayList->getElement(i).pos->x || foodPos.pos->y != foodArrayList->getElement(i).pos->y); //check if this coordinate pair overlaps with any of the othe foods
             if (not isUnique)
             {
                 break;
@@ -119,14 +127,18 @@ void supFood::generateFood(const objPosArrayList* playerArrayList, objPosArrayLi
     
     while (keepGoing)
     {
-        int isUnique = 1;
+        bool isUnique = true;
 
         foodPos.pos->x = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1; //rerun the same routine until a new unique coordinate pair is found
         foodPos.pos->y = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
 
         for (int i = 0; i < playerArrayList->getSize(); i++) //check if this matches any of the coordinate pairs already in the array list. If so, regenerate
         {
-            isUnique &= foodPos.pos->x != playerArrayList->getElement(i).pos->x && foodPos.pos->y != playerArrayList->getElement(i).pos->y; //check if this coordinate pair overlaps with any of the body segments
+            if (foodPos.pos->x == playerArrayList->getElement(i).pos->x && foodPos.pos->y == playerArrayList->getElement(i).pos->y) //if the food coordinate matches a body segment
+            {
+                isUnique = false; //the coordinates are not unique
+            }
+            // isUnique &= (foodPos.pos->x != playerArrayList->getElement(i).pos->x || foodPos.pos->y != playerArrayList->getElement(i).pos->y); //check if this coordinate pair overlaps with any of the body segments
             if (not isUnique)
             {
                 break;
@@ -135,7 +147,11 @@ void supFood::generateFood(const objPosArrayList* playerArrayList, objPosArrayLi
 
         for (int i = 0; i < foodArrayList->getSize(); i++) //check if this matches any of the coordinate pairs already in the array list. If so, regenerate
         {
-            isUnique &= foodPos.pos->x != foodArrayList->getElement(i).pos->x && foodArrayList->getElement(i).pos->y; //check if this coordinate pair overlaps with any of the othe foods
+            if (foodPos.pos->x == foodArrayList->getElement(i).pos->x && foodPos.pos->y == foodArrayList->getElement(i).pos->y)
+            {
+                isUnique = false;
+            }
+            //isUnique &= (foodPos.pos->x != foodArrayList->getElement(i).pos->x || foodPos.pos->y != foodArrayList->getElement(i).pos->y); //check if this coordinate pair overlaps with any of the othe foods
             if (not isUnique)
             {
                 break;
