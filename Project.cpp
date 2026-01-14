@@ -56,16 +56,17 @@ void Initialize(void)
     playerPtr = new Player(gmPtr);
     //playerData = new objPos; //is this needed anymore?
     playerALPtr = new objPosArrayList(); //is this needed anymore?
-    foodALPtr = new objPosArrayList; //this seems quite wasteful (400 spots...) maybe change this
+    foodALPtr = new objPosArrayList(foodBinSize); //this seems quite wasteful (400 spots...) maybe change this
 
     
     foodBin = new Food*[foodBinSize]; //allocate 5 Foods on the heap
     for (int i = 0; i < foodBinSize - 1; i++) //generate the food items
     {
         foodBin[i] = new Food(gmPtr, playerPtr->getPlayerPos(), foodALPtr);
-        foodBin[i]->generateFood(playerPtr->getPlayerPos(), foodALPtr);
+        //foodBin[i]->generateFood(playerPtr->getPlayerPos(), foodALPtr);
     }
     foodBin[4] = new supFood(gmPtr, playerPtr->getPlayerPos(), foodALPtr); //the last food item, the 5th, is a super food
+    MacUILib_printf("Hi\n");
     foodBin[4]->generateFood(playerPtr->getPlayerPos(), foodALPtr);
 }
 

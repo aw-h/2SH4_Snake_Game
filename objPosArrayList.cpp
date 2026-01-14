@@ -10,6 +10,13 @@ objPosArrayList::objPosArrayList()
     listSize = 0;
 }
 
+objPosArrayList::objPosArrayList(int size)
+{
+    aList = new objPos[size];
+    arrayCapacity = size;
+    listSize = 0;
+}
+
 objPosArrayList::~objPosArrayList()
 {
     delete[] aList; //delete entire list
