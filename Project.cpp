@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 1000000
+#define DELAY_CONST 100000
 #define foodBinSize 5 //for above and beyond; define the bin size which contains all 5 foods
 
 //bool exitFlag; //no longer needed as now we are using the exitFlag from GM
@@ -49,7 +49,7 @@ void Initialize(void)
     MacUILib_clearScreen();
     srand(time(NULL)); //seed the rng using the current time
 
-    gmPtr = new GameMechs(3,9);
+    gmPtr = new GameMechs();
     playerPtr = new Player(gmPtr);
     foodALPtr = new objPosArrayList(foodBinSize); //this seems quite wasteful (400 spots...) maybe change this
 
@@ -94,7 +94,7 @@ void RunLogic(void)
             }
             else
             {
-                foodBin[i]->regenerateFood(playerPtr->getPlayerPos(), foodALPtr, i);
+                foodBin[i]->regenerateFood(playerPtr->getPlayerPos(), foodALPtr, i); //causing problems?
                 break;
             }
         }
@@ -144,8 +144,15 @@ void DrawScreen(void)
                 {
                     if (i == playerPtr->getPlayerPos()->getElement(k).pos->y && j == playerPtr->getPlayerPos()->getElement(k).pos->x)
                     {
-                        MacUILib_printf("%c", playerPtr->getPlayerPos()->getElement(k).symbol);
-                        somethingPrinted = true;
+                        if (k != 0 && playerPtr->getPlayerPos()->getHeadElement().pos->x == playerPtr->getPlayerPos()->getElement(k).pos->x && playerPtr->getPlayerPos()->getHeadElement().pos->y == playerPtr->getPlayerPos()->getElement(k).pos->y) //this condition is checking if the body segment is overlapping the head element. This will only occur if a crash has occured, so right before losing the game
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            MacUILib_printf("%c", playerPtr->getPlayerPos()->getElement(k).symbol);
+                            somethingPrinted = true;
+                        }
                     }
                 }
                 for (int k = 0; k < foodBinSize; k++)
