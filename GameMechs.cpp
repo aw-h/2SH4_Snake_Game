@@ -12,7 +12,7 @@ GameMechs::GameMechs()
     boardSizeY = 15;
 }
 
-GameMechs::GameMechs(int boardX, int boardY)
+GameMechs::GameMechs(int boardX, int boardY) //additional constructor for custom board size
 {
     input = 0;
     exitFlag = false;
