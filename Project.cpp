@@ -11,8 +11,6 @@ using namespace std;
 #define DELAY_CONST 100000
 #define foodBinSize 5 //for above and beyond; define the bin size which contains all 5 foods
 
-//bool exitFlag; //no longer needed as now we are using the exitFlag from GM
-
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -49,7 +47,7 @@ void Initialize(void)
     MacUILib_clearScreen();
     srand(time(NULL)); //seed the rng using the current time
 
-    gmPtr = new GameMechs();
+    gmPtr = new GameMechs(3,9);
     playerPtr = new Player(gmPtr);
     foodALPtr = new objPosArrayList(foodBinSize); //this seems quite wasteful (400 spots...) maybe change this
 
@@ -58,10 +56,10 @@ void Initialize(void)
     for (int i = 0; i < foodBinSize - 1; i++) //generate the food items
     {
         foodBin[i] = new Food(gmPtr, playerPtr->getPlayerPos(), foodALPtr);
+        foodBin[i]->generateFood(playerPtr->getPlayerPos(), foodALPtr); //generate food is not part of the constructor as it should be polymorphic; call explicitly. 
     }
     foodBin[4] = new supFood(gmPtr, playerPtr->getPlayerPos(), foodALPtr); //the last food item, the 5th, is a super food
-    MacUILib_printf("Hi\n");
-    foodBin[4]->generateFood(playerPtr->getPlayerPos(), foodALPtr); //generate the food using dynamic binding; otherwise the superfood constructor just calls the base food constructor
+    foodBin[4]->generateFood(playerPtr->getPlayerPos(), foodALPtr); //The superfood constructor will otherwise just call the base food constructor
 }
 
 void GetInput(void)
@@ -89,12 +87,12 @@ void RunLogic(void)
             {
                 ateFood = true; //food has been eaten. This is only "true" if it's a normal food; super food does not increase length
                 playerPtr->updateLength(ateFood);
-                foodBin[i]->regenerateFood(playerPtr->getPlayerPos(), foodALPtr, i); //causing problems
+                foodBin[i]->regenerateFood(playerPtr->getPlayerPos(), foodALPtr, i);
                 break;
             }
             else
             {
-                foodBin[i]->regenerateFood(playerPtr->getPlayerPos(), foodALPtr, i); //causing problems?
+                foodBin[i]->regenerateFood(playerPtr->getPlayerPos(), foodALPtr, i);
                 break;
             }
         }
@@ -173,7 +171,8 @@ void DrawScreen(void)
     }
     MacUILib_printf("\n");
     MacUILib_printf("Welcome to Andrew's rendition of the C++ Snake Game! Press ESC to leave.\nScore: %d\n", gmPtr->getScore());
-    MacUILib_printf("~DEBUG MESSAGES~\n");
+    
+    MacUILib_printf("\n~DEBUG MESSAGES~\n");
     MacUILib_printf("Snake size: %d\n", playerPtr->getPlayerPos()->getSize());
     gmPtr->getExitFlagStatus() ? MacUILib_printf("exitFlag: true\n") : MacUILib_printf("exitFlag: false\n"); //ternary debugging statements
     gmPtr->getLoseFlagStatus() ? MacUILib_printf("loseFlag: true\n") : MacUILib_printf("loseFlag: false\n"); 

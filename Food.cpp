@@ -4,9 +4,7 @@ Food::Food(GameMechs *thisGMRef, const objPosArrayList *playerALRef, objPosArray
 {   
     mainGameMechsRef = thisGMRef;
     playerArrayList = playerALRef; //pass in an objPos array list so it is known which coordinates are not valid/occupied
-    foodArrayList = foodALRef; //
-    
-    generateFood(playerArrayList, foodArrayList);
+    foodArrayList = foodALRef;
 }
 
 Food::~Food() //is this necessary?
@@ -70,15 +68,12 @@ void Food::regenerateFood(const objPosArrayList* coordArrayList, objPosArrayList
     foodPos.symbol = 'f';
     int newXCoord = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1;
     int newYCoord = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
-    // foodPos.pos->x = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1; //rerun the same routine until a new unique coordinate pair is found
-    // foodPos.pos->y = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
     
     while (notValid)
     {
         notValid = false; //set to false. If both for loops are passed through without notValid becoming true, the coordinates are indeed valid
         for (int i = 0; i < coordArrayList->getSize(); i++) //compare against all body segments
-        {
-            
+        {   
             if (newXCoord == coordArrayList->getElement(i).pos->x && newYCoord == coordArrayList->getElement(i).pos->y) //coordinates match up. Regenerate
             {
                 notValid = true;
@@ -87,7 +82,6 @@ void Food::regenerateFood(const objPosArrayList* coordArrayList, objPosArrayList
         }
         for (int i = 0; i < foodArrayList->getSize(); i++)
         {
-            // if (i != index) //do not compare to its own original coordinates, rather all the other coordinate pairs
             {
                 if (newXCoord == foodArrayList->getElement(i).pos->x && newYCoord == foodArrayList->getElement(i).pos->y)
                 {
@@ -96,20 +90,15 @@ void Food::regenerateFood(const objPosArrayList* coordArrayList, objPosArrayList
                 }
             }
         }
-
         if (notValid) //the coordinates are not valid; regenerate
         {
             newXCoord = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1;
             newYCoord = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
-            
-            // foodPos.pos->x = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1; //rerun the same routine until a new unique coordinate pair is found
-            // foodPos.pos->y = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
         }
     }
-
+    
     foodPos.pos->x = newXCoord;
     foodPos.pos->y = newYCoord;
-
     foodArrayList->updateElement(index, foodPos);
 }
 
@@ -184,16 +173,15 @@ void supFood::regenerateFood(const objPosArrayList* coordArrayList, objPosArrayL
     bool notValid = true;
     
     foodPos.symbol = 'F';
-    foodPos.pos->x = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1; //rerun the same routine until a new unique coordinate pair is found
-    foodPos.pos->y = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
+    int newXCoord = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1;
+    int newYCoord = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
     
     while (notValid)
     {
         notValid = false; //set to false. If both for loops are passed through without notValid becoming true, the coordinates are indeed valid
         for (int i = 0; i < coordArrayList->getSize(); i++) //compare against all body segments
-        {
-            
-            if (foodPos.pos->x == coordArrayList->getElement(i).pos->x && foodPos.pos->y == coordArrayList->getElement(i).pos->y) //coordinates match up. Regenerate
+        {   
+            if (newXCoord == coordArrayList->getElement(i).pos->x && newYCoord == coordArrayList->getElement(i).pos->y) //coordinates match up. Regenerate
             {
                 notValid = true;
                 break;
@@ -201,23 +189,23 @@ void supFood::regenerateFood(const objPosArrayList* coordArrayList, objPosArrayL
         }
         for (int i = 0; i < foodArrayList->getSize(); i++)
         {
-            if (i != index) //do not compare to its own original coordinates, rather all the other coordinate pairs
             {
-                if (foodPos.pos->x == foodArrayList->getElement(i).pos->x && foodPos.pos->y == foodArrayList->getElement(i).pos->y)
+                if (newXCoord == foodArrayList->getElement(i).pos->x && newYCoord == foodArrayList->getElement(i).pos->y)
                 {
                     notValid = true;
                     break;
                 }
             }
         }
-
         if (notValid) //the coordinates are not valid; regenerate
         {
-            foodPos.pos->x = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1; //rerun the same routine until a new unique coordinate pair is found
-            foodPos.pos->y = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
+            newXCoord = rand() % (mainGameMechsRef->getBoardSizeX() - 2) + 1;
+            newYCoord = rand() % (mainGameMechsRef->getBoardSizeY() - 2) + 1;
         }
     }
-
+    
+    foodPos.pos->x = newXCoord;
+    foodPos.pos->y = newYCoord;
     foodArrayList->updateElement(index, foodPos);
 }
 
